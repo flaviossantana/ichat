@@ -1,6 +1,7 @@
 package br.com.alura.ichat.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.zip.Inflater;
 
 import br.com.alura.ichat.R;
 import br.com.alura.ichat.modelo.Mensagem;
@@ -17,10 +17,12 @@ public class MensagemAdapter extends BaseAdapter {
 
     private List<Mensagem> mensagens;
     private Context context;
+    private int idCliente;
 
-    public MensagemAdapter(List<Mensagem> mensagens, Context context) {
+    public MensagemAdapter(Context context, List<Mensagem> mensagens, int idCliente) {
         this.mensagens = mensagens;
         this.context = context;
+        this.idCliente = idCliente;
     }
 
     @Override
@@ -48,6 +50,9 @@ public class MensagemAdapter extends BaseAdapter {
         TextView texto = view.findViewById(R.id.mensagem_texto);
         texto.setText(mensagem.getTexto());
 
+        if(idCliente != mensagem.getId()){
+            view.setBackgroundColor(Color.CYAN);
+        }
 
 
 
