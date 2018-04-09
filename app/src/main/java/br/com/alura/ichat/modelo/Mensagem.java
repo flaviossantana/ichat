@@ -3,15 +3,11 @@ package br.com.alura.ichat.modelo;
 public class Mensagem {
 
     private int id;
-    private String texto;
+    private String text;
 
-    public Mensagem() {
-        super();
-    }
-
-    public Mensagem(int id, String texto) {
+    public Mensagem(int id, String text) {
         this.id = id;
-        this.texto = texto;
+        this.text = text;
     }
 
     public int getId() {
@@ -22,11 +18,11 @@ public class Mensagem {
         this.id = id;
     }
 
-    public String getTexto() {
-        return texto;
+    public String getText() {
+        return text;
     }
 
-    public void setTexto(String texto) {
-        this.texto = texto;
+    public void setText(String text) {
+        this.text = text;
     }
 }

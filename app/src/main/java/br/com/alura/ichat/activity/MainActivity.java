@@ -7,7 +7,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import br.com.alura.ichat.R;
 import br.com.alura.ichat.adapter.MensagemAdapter;
@@ -19,25 +21,42 @@ public class MainActivity extends AppCompatActivity {
     private int idCliente;
     private EditText texto;
     private Button btnEnviar;
+    private List<Mensagem> mensagens;
+    private ListView mensagensListView;
+    private ChatService chatService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ListView mensagensListView = this.findViewById(R.id.main_lista_menagens);
         idCliente = 1;
-        mensagensListView.setAdapter(new MensagemAdapter(this, Arrays.asList(new Mensagem(1, "Olá!"), new Mensagem(2, "Blz?")), idCliente));
+
+        mensagens = mensagens = new ArrayList<>();
+
+        mensagensListView = this.findViewById(R.id.main_lista_menagens);
+        mensagensListView.setAdapter(new MensagemAdapter(this, mensagens, idCliente));
 
         texto = this.findViewById(R.id.main_texto);
+
+        chatService = new ChatService(this);
+        chatService.ouvirMensagens();
 
         btnEnviar = findViewById(R.id.main_btn_envair);
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ChatService().enviar(new Mensagem(idCliente, texto.getText().toString()));
+                chatService.enviar(new Mensagem(idCliente, texto.getText().toString()));
             }
         });
 
     }
+
+    public void colocaNaLista(Mensagem mensagem) {
+        mensagens.add(mensagem);
+        MensagemAdapter adapter = new MensagemAdapter(this, mensagens, idCliente);
+        mensagensListView.setAdapter(adapter);
+        chatService.ouvirMensagens();
+    }
+
+
 }

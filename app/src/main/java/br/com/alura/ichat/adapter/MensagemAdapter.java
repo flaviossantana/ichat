@@ -48,7 +48,7 @@ public class MensagemAdapter extends BaseAdapter {
         Mensagem mensagem = getItem(position);
 
         TextView texto = view.findViewById(R.id.mensagem_texto);
-        texto.setText(mensagem.getTexto());
+        texto.setText(mensagem.getText());
 
         if(idCliente != mensagem.getId()){
             view.setBackgroundColor(Color.CYAN);
