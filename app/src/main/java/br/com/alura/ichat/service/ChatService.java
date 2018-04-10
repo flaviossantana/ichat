@@ -32,7 +32,7 @@ public class ChatService {
                 try {
 
                     // Altere para o seu IP
-                    URL url = new URL("http://192.168.0.100:8080/polling");
+                    URL url = new URL("http://192.168.0.103:8080/polling");
 
                     HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
 
@@ -72,7 +72,7 @@ public class ChatService {
             public void run() {
                 try {
                     // Altere para o seu IP
-                    URL url = new URL("http://192.168.0.100:8080/polling");
+                    URL url = new URL("http://192.168.0.103:8080/polling");
 
                     HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
 

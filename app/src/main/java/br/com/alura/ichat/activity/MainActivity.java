@@ -15,6 +15,9 @@ import br.com.alura.ichat.R;
 import br.com.alura.ichat.adapter.MensagemAdapter;
 import br.com.alura.ichat.modelo.Mensagem;
 import br.com.alura.ichat.service.ChatService;
+import br.com.alura.ichat.service.IChatService;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,14 +41,21 @@ public class MainActivity extends AppCompatActivity {
 
         texto = this.findViewById(R.id.main_texto);
 
-        chatService = new ChatService(this);
-        chatService.ouvirMensagens();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.0.103:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        final IChatService chatService = retrofit.create(IChatService.class);
+
+//        chatService = new ChatService(this);
+        chatService.ouvirMensagem();
 
         btnEnviar = findViewById(R.id.main_btn_envair);
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chatService.enviar(new Mensagem(idCliente, texto.getText().toString()));
+                chatService.envair(new Mensagem(idCliente, texto.getText().toString()));
             }
         });
 
