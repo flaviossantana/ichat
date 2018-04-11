@@ -13,9 +13,13 @@ import java.util.List;
 
 import br.com.alura.ichat.R;
 import br.com.alura.ichat.adapter.MensagemAdapter;
+import br.com.alura.ichat.callback.OuvirMensagensCallback;
 import br.com.alura.ichat.modelo.Mensagem;
 import br.com.alura.ichat.service.ChatService;
 import br.com.alura.ichat.service.IChatService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -48,16 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
         final IChatService chatService = retrofit.create(IChatService.class);
 
-//        chatService = new ChatService(this);
-        chatService.ouvirMensagem();
-
-        btnEnviar = findViewById(R.id.main_btn_envair);
-        btnEnviar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chatService.envair(new Mensagem(idCliente, texto.getText().toString()));
-            }
-        });
+        Call<Mensagem> call = chatService.ouvirMensagem();
+        call.enqueue(new OuvirMensagensCallback(this));
 
     }
 

@@ -12,6 +12,6 @@ public interface IChatService {
     Call<Void> envair(@Body Mensagem mensagem);
 
     @GET("polling")
-    Call<Void> ouvirMensagem();
+    Call<Mensagem> ouvirMensagem();
 
 }
