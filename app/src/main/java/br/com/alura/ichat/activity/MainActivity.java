@@ -12,6 +12,7 @@ import java.util.List;
 
 import br.com.alura.ichat.R;
 import br.com.alura.ichat.adapter.MensagemAdapter;
+import br.com.alura.ichat.app.ChatApp;
 import br.com.alura.ichat.callback.EnviarMensagensCallback;
 import br.com.alura.ichat.callback.OuvirMensagensCallback;
 import br.com.alura.ichat.modelo.Mensagem;
@@ -43,12 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         listaDeMensagens.setAdapter(mensagemAdapter);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.103:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        chatService = retrofit.create(IChatService.class);
+        chatService = ((ChatApp) getApplication()).chatService();
 
         ouvirMensagem();
 
