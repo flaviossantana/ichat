@@ -8,10 +8,10 @@ import retrofit2.Response;
 
 public class OuvirMensagensCallback implements Callback<Mensagem> {
 
-    private final MainActivity mainActivity;
+    private final MainActivity activity;
 
-    public OuvirMensagensCallback(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    public OuvirMensagensCallback(MainActivity activity) {
+        this.activity = activity;
     }
 
     @Override
@@ -19,13 +19,14 @@ public class OuvirMensagensCallback implements Callback<Mensagem> {
 
         if(response.isSuccessful()){
             Mensagem mensagem = response.body();
-            mainActivity.colocaNaLista(mensagem);
+            activity.colocaNaLista(mensagem);
+            activity.ouvirMensagem();
         }
     }
 
     @Override
     public void onFailure(Call<Mensagem> call, Throwable t) {
-
+        activity.ouvirMensagem();
     }
 
 }

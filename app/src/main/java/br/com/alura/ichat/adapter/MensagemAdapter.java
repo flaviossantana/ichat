@@ -45,15 +45,15 @@ public class MensagemAdapter extends BaseAdapter {
 
         View view = LayoutInflater.from(context).inflate(R.layout.mensagem, parent, false);
 
-        Mensagem mensagem = getItem(position);
-
         TextView texto = view.findViewById(R.id.mensagem_texto);
-        texto.setText(mensagem.getText());
+
+        Mensagem mensagem = getItem(position);
 
         if(idCliente != mensagem.getId()){
             view.setBackgroundColor(Color.CYAN);
         }
 
+        texto.setText(mensagem.getText());
 
 
         return view;
