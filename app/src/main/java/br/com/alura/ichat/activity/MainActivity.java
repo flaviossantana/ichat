@@ -44,7 +44,15 @@ public class MainActivity extends AppCompatActivity {
 
         listaDeMensagens.setAdapter(mensagemAdapter);
 
-        chatService = ((ChatApp) getApplication()).chatService();
+//        chatService = ((ChatApp) getApplication()).chatService();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.0.103:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        chatService = retrofit.create(IChatService.class);
+
 
         ouvirMensagem();
 
