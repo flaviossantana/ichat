@@ -17,52 +17,52 @@ import br.com.alura.ichat.adapter.MensagemAdapter;
 import br.com.alura.ichat.app.ChatApp;
 import br.com.alura.ichat.callback.EnviarMensagensCallback;
 import br.com.alura.ichat.callback.OuvirMensagensCallback;
-import br.com.alura.ichat.component.ChatComponent;
 import br.com.alura.ichat.modelo.Mensagem;
 import br.com.alura.ichat.service.IChatService;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
     private int idCliente = 1;
-    private EditText texto;
-    private Button btnEnviar;
-    private List<Mensagem> mensagens;
-    private ListView listaDeMensagens;
 
     @Inject
     public IChatService chatService;
+
+    @BindView(R.id.main_texto)
+    public EditText texto;
+
+    @BindView(R.id.main_btn_envair)
+    public Button btnEnviar;
+
+    @BindView(R.id.main_lista_menagens)
+    public ListView listaDeMensagens;
+
+    private List<Mensagem> mensagens = new ArrayList<>();;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         ChatApp.getComponent().inject(this);
 
-        this.listaDeMensagens = this.findViewById(R.id.main_lista_menagens);
-
         mensagens = new ArrayList<>();
 
-        MensagemAdapter mensagemAdapter = new MensagemAdapter(this, mensagens, idCliente);
-
-        listaDeMensagens.setAdapter(mensagemAdapter);
+        listaDeMensagens.setAdapter(new MensagemAdapter(this, mensagens, idCliente));
 
         ouvirMensagem();
 
-        btnEnviar = findViewById(R.id.main_btn_envair);
-        btnEnviar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chatService.enviar(new Mensagem(idCliente, texto.getText().toString())).enqueue(new EnviarMensagensCallback());
-            }
-        });
+    }
 
-        texto = this.findViewById(R.id.main_texto);
-
+    @OnClick(R.id.main_btn_envair)
+    public void onClickEnviar(View view){
+        chatService.enviar(new Mensagem(idCliente, texto.getText().toString())).enqueue(new EnviarMensagensCallback());
+        texto.setText("");
     }
 
     public void colocaNaLista(Mensagem mensagem) {
