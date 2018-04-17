@@ -10,11 +10,14 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import br.com.alura.ichat.R;
 import br.com.alura.ichat.adapter.MensagemAdapter;
 import br.com.alura.ichat.app.ChatApp;
 import br.com.alura.ichat.callback.EnviarMensagensCallback;
 import br.com.alura.ichat.callback.OuvirMensagensCallback;
+import br.com.alura.ichat.component.ChatComponent;
 import br.com.alura.ichat.modelo.Mensagem;
 import br.com.alura.ichat.service.IChatService;
 import retrofit2.Call;
@@ -28,13 +31,17 @@ public class MainActivity extends AppCompatActivity {
     private Button btnEnviar;
     private List<Mensagem> mensagens;
     private ListView listaDeMensagens;
-    private IChatService chatService;
+
+    @Inject
+    public IChatService chatService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ChatApp.getComponent().inject(this);
 
         this.listaDeMensagens = this.findViewById(R.id.main_lista_menagens);
 
@@ -43,16 +50,6 @@ public class MainActivity extends AppCompatActivity {
         MensagemAdapter mensagemAdapter = new MensagemAdapter(this, mensagens, idCliente);
 
         listaDeMensagens.setAdapter(mensagemAdapter);
-
-//        chatService = ((ChatApp) getApplication()).chatService();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.103:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        chatService = retrofit.create(IChatService.class);
-
 
         ouvirMensagem();
 

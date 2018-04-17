@@ -2,20 +2,21 @@ package br.com.alura.ichat.app;
 
 import android.app.Application;
 
-import br.com.alura.ichat.service.IChatService;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import br.com.alura.ichat.component.ChatComponent;
+import br.com.alura.ichat.component.DaggerChatComponent;
+import br.com.alura.ichat.module.ChatModule;
 
 public class ChatApp extends Application {
 
-    public IChatService chatService(){
+    private static ChatComponent component;
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.103:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        return retrofit.create(IChatService.class);
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        component = DaggerChatComponent.builder().build();
     }
 
+    public static ChatComponent getComponent() {
+        return component;
+    }
 }
