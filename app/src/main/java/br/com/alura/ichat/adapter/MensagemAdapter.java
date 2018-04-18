@@ -6,18 +6,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import br.com.alura.ichat.R;
 import br.com.alura.ichat.modelo.Mensagem;
+import butterknife.BindView;
 
 public class MensagemAdapter extends BaseAdapter {
 
     private List<Mensagem> mensagens;
-    private Context context;
+    private Context context;;
     private int idCliente;
+
+    @BindView(R.id.mensagem_imagem)
+    private ImageView imgTexto;
+
+    @BindView(R.id.mensagem_texto)
+    private TextView texto;
 
     public MensagemAdapter(Context context, List<Mensagem> mensagens, int idCliente) {
         this.mensagens = mensagens;
@@ -45,7 +53,7 @@ public class MensagemAdapter extends BaseAdapter {
 
         View view = LayoutInflater.from(context).inflate(R.layout.mensagem, parent, false);
 
-        TextView texto = view.findViewById(R.id.mensagem_texto);
+        texto = view.findViewById(R.id.mensagem_texto);
 
         Mensagem mensagem = getItem(position);
 

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Inject
     public IChatService chatService;
+
+    @BindView(R.id.main_imagem)
+    public ImageView msgImagem;
 
     @BindView(R.id.main_texto)
     public EditText texto;
