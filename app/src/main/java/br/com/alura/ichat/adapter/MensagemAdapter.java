@@ -9,23 +9,27 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import br.com.alura.ichat.R;
 import br.com.alura.ichat.modelo.Mensagem;
+import br.com.alura.ichat.transformation.CircleTransform;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MensagemAdapter extends BaseAdapter {
 
-    private List<Mensagem> mensagens;
-    private Context context;;
     private int idCliente;
+    private Context context;;
+    private List<Mensagem> mensagens;
 
     @BindView(R.id.mensagem_imagem)
-    private ImageView imgTexto;
+    public ImageView imagem;
 
     @BindView(R.id.mensagem_texto)
-    private TextView texto;
+    public TextView texto;
 
     public MensagemAdapter(Context context, List<Mensagem> mensagens, int idCliente) {
         this.mensagens = mensagens;
@@ -53,7 +57,7 @@ public class MensagemAdapter extends BaseAdapter {
 
         View view = LayoutInflater.from(context).inflate(R.layout.mensagem, parent, false);
 
-        texto = view.findViewById(R.id.mensagem_texto);
+        ButterKnife.bind(this, view);
 
         Mensagem mensagem = getItem(position);
 
@@ -62,6 +66,9 @@ public class MensagemAdapter extends BaseAdapter {
         }
 
         texto.setText(mensagem.getText());
+
+
+        Picasso.with(context).load("http://api.adorable.io/avatars/250/" + mensagem.getId() + ".png").transform(new CircleTransform()).into(imagem);
 
 
         return view;

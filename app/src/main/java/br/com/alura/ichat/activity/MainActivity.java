@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,7 @@ import br.com.alura.ichat.callback.EnviarMensagensCallback;
 import br.com.alura.ichat.callback.OuvirMensagensCallback;
 import br.com.alura.ichat.modelo.Mensagem;
 import br.com.alura.ichat.service.IChatService;
+import br.com.alura.ichat.transformation.CircleTransform;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -52,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        Picasso.with(this).load("http://api.adorable.io/avatars/250/" + idCliente + ".png").into(msgImagem);
 
         ChatApp.getComponent().inject(this);
 
