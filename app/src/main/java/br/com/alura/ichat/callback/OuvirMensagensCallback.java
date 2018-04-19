@@ -39,7 +39,7 @@ public class OuvirMensagensCallback implements Callback<Mensagem> {
 
     @Override
     public void onFailure(Call<Mensagem> call, Throwable t) {
-
+        ((MainActivity)context).ouvirMensagem();
     }
 
 }
