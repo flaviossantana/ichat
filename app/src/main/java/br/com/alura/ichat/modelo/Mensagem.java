@@ -1,6 +1,8 @@
 package br.com.alura.ichat.modelo;
 
-public class Mensagem {
+import java.io.Serializable;
+
+public class Mensagem implements Serializable {
 
     private int id;
     private String text;

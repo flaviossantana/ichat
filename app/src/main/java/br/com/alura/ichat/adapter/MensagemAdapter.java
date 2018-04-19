@@ -68,16 +68,15 @@ public class MensagemAdapter extends BaseAdapter {
 
         Mensagem mensagem = getItem(position);
 
-        if(idCliente != mensagem.getId()){
-            view.setBackgroundColor(Color.CYAN);
-        }
+        view.setBackgroundColor(corLinha(mensagem));
 
         texto.setText(mensagem.getText());
-
-
         picasso.with(context).load("http://api.adorable.io/avatars/250/" + mensagem.getId() + ".png").transform(new CircleTransform()).into(imagem);
 
-
         return view;
+    }
+
+    private int corLinha(Mensagem mensagem) {
+        return idCliente != mensagem.getId() ? Color.CYAN : Color.WHITE;
     }
 }
