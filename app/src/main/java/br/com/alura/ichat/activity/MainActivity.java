@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Mensagem mensagem = (Mensagem) intent.getSerializableExtra(MENSAGEM);
             colocaNaLista(mensagem);
+            ouvirMensagem();
         }
     };
 
@@ -83,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
         listaDeMensagens.setAdapter(new MensagemAdapter(this, mensagens, idCliente));
 
         ouvirMensagem();
-
-
 
     }
 
@@ -105,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
         this.mensagens.add(mensagem);
         MensagemAdapter adapter = new MensagemAdapter(this, this.mensagens, idCliente);
         listaDeMensagens.setAdapter(adapter);
-        ouvirMensagem();
     }
 
     public void ouvirMensagem() {
