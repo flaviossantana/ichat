@@ -13,7 +13,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import br.com.alura.ichat.R;
+import br.com.alura.ichat.app.ChatApp;
 import br.com.alura.ichat.modelo.Mensagem;
 import br.com.alura.ichat.transformation.CircleTransform;
 import butterknife.BindView;
@@ -24,6 +27,9 @@ public class MensagemAdapter extends BaseAdapter {
     private int idCliente;
     private Context context;;
     private List<Mensagem> mensagens;
+
+    @Inject
+    public Picasso picasso;
 
     @BindView(R.id.mensagem_imagem)
     public ImageView imagem;
@@ -58,6 +64,7 @@ public class MensagemAdapter extends BaseAdapter {
         View view = LayoutInflater.from(context).inflate(R.layout.mensagem, parent, false);
 
         ButterKnife.bind(this, view);
+        ChatApp.getComponent().inject(this);
 
         Mensagem mensagem = getItem(position);
 
@@ -68,7 +75,7 @@ public class MensagemAdapter extends BaseAdapter {
         texto.setText(mensagem.getText());
 
 
-        Picasso.with(context).load("http://api.adorable.io/avatars/250/" + mensagem.getId() + ".png").transform(new CircleTransform()).into(imagem);
+        picasso.with(context).load("http://api.adorable.io/avatars/250/" + mensagem.getId() + ".png").transform(new CircleTransform()).into(imagem);
 
 
         return view;

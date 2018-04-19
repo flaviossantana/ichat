@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     public IChatService chatService;
 
+    @Inject
+    public Picasso picasso;
+
     @BindView(R.id.main_imagem)
     public ImageView msgImagem;
 
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        Picasso.with(this).load("http://api.adorable.io/avatars/250/" + idCliente + ".png").into(msgImagem);
+        picasso.with(this).load("http://api.adorable.io/avatars/250/" + idCliente + ".png").into(msgImagem);
 
         ChatApp.getComponent().inject(this);
 
