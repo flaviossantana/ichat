@@ -43,6 +43,7 @@ import static br.com.alura.ichat.callback.OuvirMensagensCallback.NOVA_MSG;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String MSG_LIST = "MSG_LIST";
     private int idCliente = 1;
 
     @Inject
@@ -78,7 +79,12 @@ public class MainActivity extends AppCompatActivity {
         ChatApp.getComponent().inject(this);
         picasso.with(this).load("http://api.adorable.io/avatars/250/" + idCliente + ".png").into(msgImagem);
 
-        mensagens = new ArrayList<>();
+        if(savedInstanceState != null){
+            mensagens = (List<Mensagem>) savedInstanceState.getSerializable(MSG_LIST);
+        }else {
+            mensagens = new ArrayList<>();
+        }
+
 
         listaDeMensagens.setAdapter(new MensagemAdapter(this, mensagens, idCliente));
 
@@ -95,6 +101,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         eventBus.unregister(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(MSG_LIST, (ArrayList<Mensagem>) mensagens);
     }
 
     @OnClick(R.id.main_btn_envair)
