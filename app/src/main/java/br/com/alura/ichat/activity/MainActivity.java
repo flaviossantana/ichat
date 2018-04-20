@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -112,7 +113,9 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.main_btn_envair)
     public void onClickEnviar(View view){
         chatService.enviar(new Mensagem(idCliente, texto.getText().toString())).enqueue(new EnviarMensagensCallback());
-        texto.setText("");
+        texto.getText().clear();
+        InputMethodManager input = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        input.hideSoftInputFromWindow(texto.getWindowToken(), 0);
     }
 
     @Subscribe
