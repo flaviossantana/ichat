@@ -51,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     public Picasso picasso;
 
+    @Inject
+    public EventBus eventBus;
+
     @BindView(R.id.main_imagem)
     public ImageView msgImagem;
 
@@ -85,7 +88,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         ouvirMensagem(null);
-        EventBus.getDefault().register(this);
+        eventBus.register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        eventBus.unregister(this);
     }
 
     @OnClick(R.id.main_btn_envair)
@@ -105,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     @Subscribe
     public void ouvirMensagem(MensagemEvent event) {
         Call<Mensagem> call = chatService.ouvirMensagem();
-        call.enqueue(new OuvirMensagensCallback(this));
+        call.enqueue(new OuvirMensagensCallback(this, eventBus));
     }
 
     @Subscribe
@@ -113,9 +122,4 @@ public class MainActivity extends AppCompatActivity {
         ouvirMensagem(null);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
 }

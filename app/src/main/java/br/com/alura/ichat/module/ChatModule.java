@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+
 import br.com.alura.ichat.service.IChatService;
 import dagger.Module;
 import dagger.Provides;
@@ -33,6 +35,11 @@ public class ChatModule {
     @Provides
     public Picasso picasso(){
         return new Picasso.Builder(app).build();
+    }
+
+    @Provides
+    public EventBus eventBus(){
+        return EventBus.builder().build();
     }
 
 }

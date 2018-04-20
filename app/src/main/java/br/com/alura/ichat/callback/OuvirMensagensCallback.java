@@ -20,9 +20,11 @@ public class OuvirMensagensCallback implements Callback<Mensagem> {
     public static final String NOVA_MSG = "nova_msg";
 
     private Context context;
+    private EventBus eventBus;
 
-    public OuvirMensagensCallback(Context context) {
+    public OuvirMensagensCallback(Context context, EventBus eventBus) {
         this.context = context;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -30,13 +32,13 @@ public class OuvirMensagensCallback implements Callback<Mensagem> {
 
         if(response.isSuccessful()){
             Mensagem mensagem = response.body();
-            EventBus.getDefault().post(new MensagemEvent(mensagem));
+            eventBus.post(new MensagemEvent(mensagem));
         }
     }
 
     @Override
     public void onFailure(Call<Mensagem> call, Throwable t) {
-        EventBus.getDefault().post(new FailureEvent());
+        eventBus.post(new FailureEvent());
     }
 
 
