@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
+import org.greenrobot.eventbus.EventBus;
+
 import br.com.alura.ichat.activity.MainActivity;
+import br.com.alura.ichat.event.FailureEvent;
+import br.com.alura.ichat.event.MensagemEvent;
 import br.com.alura.ichat.modelo.Mensagem;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,20 +30,15 @@ public class OuvirMensagensCallback implements Callback<Mensagem> {
 
         if(response.isSuccessful()){
             Mensagem mensagem = response.body();
-            sendMensagem(mensagem);
+            EventBus.getDefault().post(new MensagemEvent(mensagem));
         }
-    }
-
-    private void sendMensagem(Mensagem mensagem) {
-        Intent intent = new Intent(NOVA_MSG);
-        intent.putExtra(MENSAGEM, mensagem);
-        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(context);
-        broadcastManager.sendBroadcast(intent);
     }
 
     @Override
     public void onFailure(Call<Mensagem> call, Throwable t) {
-        ((MainActivity)context).ouvirMensagem();
+        EventBus.getDefault().post(new FailureEvent());
     }
+
+
 
 }

@@ -15,6 +15,9 @@ import android.widget.ListView;
 
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +28,8 @@ import br.com.alura.ichat.adapter.MensagemAdapter;
 import br.com.alura.ichat.app.ChatApp;
 import br.com.alura.ichat.callback.EnviarMensagensCallback;
 import br.com.alura.ichat.callback.OuvirMensagensCallback;
+import br.com.alura.ichat.event.FailureEvent;
+import br.com.alura.ichat.event.MensagemEvent;
 import br.com.alura.ichat.modelo.Mensagem;
 import br.com.alura.ichat.service.IChatService;
 import br.com.alura.ichat.transformation.CircleTransform;
@@ -60,15 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Mensagem> mensagens = new ArrayList<>();
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Mensagem mensagem = (Mensagem) intent.getSerializableExtra(MENSAGEM);
-            colocaNaLista(mensagem);
-            ouvirMensagem();
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -76,22 +72,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        picasso.with(this).load("http://api.adorable.io/avatars/250/" + idCliente + ".png").into(msgImagem);
         ChatApp.getComponent().inject(this);
+        picasso.with(this).load("http://api.adorable.io/avatars/250/" + idCliente + ".png").into(msgImagem);
 
         mensagens = new ArrayList<>();
 
         listaDeMensagens.setAdapter(new MensagemAdapter(this, mensagens, idCliente));
-
-        ouvirMensagem();
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
-        broadcastManager.registerReceiver(broadcastReceiver, new IntentFilter(NOVA_MSG));
+        ouvirMensagem(null);
+        EventBus.getDefault().register(this);
     }
 
     @OnClick(R.id.main_btn_envair)
@@ -100,21 +94,28 @@ public class MainActivity extends AppCompatActivity {
         texto.setText("");
     }
 
-    public void colocaNaLista(Mensagem mensagem) {
-        this.mensagens.add(mensagem);
+    @Subscribe
+    public void colocaNaLista(MensagemEvent event) {
+        this.mensagens.add(event.getMensagem());
+
         MensagemAdapter adapter = new MensagemAdapter(this, this.mensagens, idCliente);
         listaDeMensagens.setAdapter(adapter);
     }
 
-    public void ouvirMensagem() {
+    @Subscribe
+    public void ouvirMensagem(MensagemEvent event) {
         Call<Mensagem> call = chatService.ouvirMensagem();
         call.enqueue(new OuvirMensagensCallback(this));
+    }
+
+    @Subscribe
+    public void lidarCom(FailureEvent event){
+        ouvirMensagem(null);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
-        broadcastManager.unregisterReceiver(broadcastReceiver);
+        EventBus.getDefault().unregister(this);
     }
 }
