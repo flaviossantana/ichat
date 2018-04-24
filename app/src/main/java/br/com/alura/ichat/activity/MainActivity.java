@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     public EventBus eventBus;
 
+    @Inject
+    public InputMethodManager inputMethodManager;
+
     @BindView(R.id.main_imagem)
     public ImageView msgImagem;
 
@@ -114,14 +117,12 @@ public class MainActivity extends AppCompatActivity {
     public void onClickEnviar(View view){
         chatService.enviar(new Mensagem(idCliente, texto.getText().toString())).enqueue(new EnviarMensagensCallback());
         texto.getText().clear();
-        InputMethodManager input = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        input.hideSoftInputFromWindow(texto.getWindowToken(), 0);
+        inputMethodManager.hideSoftInputFromWindow(texto.getWindowToken(), 0);
     }
 
     @Subscribe
     public void colocaNaLista(MensagemEvent event) {
         this.mensagens.add(event.getMensagem());
-
         MensagemAdapter adapter = new MensagemAdapter(this, this.mensagens, idCliente);
         listaDeMensagens.setAdapter(adapter);
     }

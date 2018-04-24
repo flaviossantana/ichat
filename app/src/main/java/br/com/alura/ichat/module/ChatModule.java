@@ -1,6 +1,8 @@
 package br.com.alura.ichat.module;
 
 import android.app.Application;
+import android.content.Context;
+import android.view.inputmethod.InputMethodManager;
 
 import com.squareup.picasso.Picasso;
 
@@ -25,7 +27,7 @@ public class ChatModule {
     public IChatService chatService(){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.103:8080/")
+                .baseUrl("https://ichatapi.herokuapp.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -42,4 +44,8 @@ public class ChatModule {
         return EventBus.builder().build();
     }
 
+    @Provides
+    public InputMethodManager inputMethodManager(){
+        return (InputMethodManager) app.getSystemService(Context.INPUT_METHOD_SERVICE);
+    }
 }
