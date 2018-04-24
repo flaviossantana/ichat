@@ -21,6 +21,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -45,7 +46,7 @@ import static br.com.alura.ichat.callback.OuvirMensagensCallback.NOVA_MSG;
 public class MainActivity extends AppCompatActivity {
 
     public static final String MSG_LIST = "MSG_LIST";
-    private int idCliente = 1;
+    private int idCliente = new Random().nextInt();;
 
     @Inject
     public IChatService chatService;
